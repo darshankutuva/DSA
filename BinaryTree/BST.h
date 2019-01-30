@@ -163,14 +163,20 @@ bool CBST<Type>::Delete(Type Value)
 			pReplacementNode = pNode->RightChild;
 		}
 		
-		if (pNode->Parent->LeftChild == pNode)
+		if (pReplacementNode != NULL)
 		{
-			pNode->Parent->LeftChild = pReplacementNode;
+		
+			if (pNode->Parent->LeftChild == pNode)
+			{
+				pNode->Parent->LeftChild = pReplacementNode;
+			}
+			else
+			{
+				pNode->Parent->RightChild = pReplacementNode;
+			}
 		}
-		else
-		{
-			pNode->Parent->RightChild = pReplacementNode;
-		}
+		
+		delete pNode;
 		
 		status = true;
 	}

@@ -29,24 +29,17 @@ char * ConvertToString(int Number, char *String, int Base)
 	}
 	
 	//
-	// If Base 10 and if the number is in two's complement
+	// if the number is in two's complement
 	// then convert to positive number.
 	//
 	
 	if (Number & (0x1 << 0x1f))
 	{
-		if (Base == 10)
-		{
-			Number = ~Number + 0x1;
+		Number = ~Number + 0x1;
 			
-			String[0] = '-';
+		String[0] = '-';
 			
-			length++;
-		}
-		else
-		{
-			goto Exit;
-		}
+		length++;
 	}
 	
 	//

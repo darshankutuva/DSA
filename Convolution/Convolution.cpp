@@ -1,6 +1,9 @@
-void convolution(double **MatrixA, double **MatrixB, unsigned long StartRowA, unsigned long StartColA, unsigned long RowsB, unsigned long ColsB)
+double
+convolution(double **MatrixA, double **MatrixB, unsigned long StartRowA, unsigned long StartColA, unsigned long RowsB, unsigned long ColsB)
 {
 	unsigned long i, j;
+	
+	double sum = 0;
 
 	for (i = 0; i < RowsB; i++)
 	{
@@ -11,4 +14,6 @@ void convolution(double **MatrixA, double **MatrixB, unsigned long StartRowA, un
 
 		}
 	}
+	
+	return sum;
 } 
