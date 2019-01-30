@@ -1,98 +1,34 @@
+#include <iostream>
 
-void Factorial(unsigned long N, unsigned long *Fact)
+using namespace std;
+
+void Permutate(char *string, bool *isVisited, int n, int r, char *result, int resultIndex)
 {
-	unsigned long i;
-	
-	*Fact = 1;
-	
-	if (N == 0)
-	{
-		goto Exit;
-	}
-	
-	for (i = N; i > 0; i--)
-	{
-		*Fact = *Fact * i;
-	}
-	
-Exit:
-	return;
-}
+	int i;
 
-bool Permutate(char *String,
-			   unsigned long N,
-			   unsigned long R,
-			   char **Result)
-{
-	bool status = true;
-	
-	bool *IsVisited = NULL;
-	
-	unsigned long len;
-	
-	if (String == NULL || N == 0 || R == 0)
+	if (r == 0)
 	{
-		status = false;
-		
-		goto Exit;
-	}
-	
-	len = strlen(String);
-	
-	IsVisited = new bool[len];
-	
-	if (IsVisited == NULL)
-	{
-		status = false;
-		
-		goto Exit;
-	}
-	
-	memset(IsVisited, 0, len);
-	
-	PermutateRecursive(String, N, R, IsVisited, 0, Result);
-	
-Exit:
-
-	if (IsVisited != NULL)
-	{
-		delete[] IsVisited;
-	}
-
-	return status;
-	
-}
-void PermutateRecursive(char *String,
-						unsigned long N, 
-						unsigned long R,
-						bool *IsVisited,
-						unsigned long ResCol,
-						char **Result)
-{
-	unsigned long i;
-	
-	static unsigned long ResRow;
-
-	if (R == 0)
-	{
-		Result[ResRow][ResCol] = '\0';
-
-		ResRow++;
-		
-		goto Exit;
-	}
-
-	for (i = 0; i < N; i++)
-	{
-		if (!IsVisited[i])
+		for (i = 0; i < resultIndex; i++)
 		{
-			IsVisited[i] = true;
+			cout << result[i];
+		}
 
-			Result[ResRow][ResCol] = String[i];
+		cout << endl;
 
-			PermutateRecursive(String, IsVisited, N, R - 1, Result, ResCol + 1);
+		goto Exit;
+	}
 
-			IsVisited[i] = false;
+	for (i = 0; i < n; i++)
+	{
+		if (!isVisited[i])
+		{
+			isVisited[i] = true;
+
+			result[resultIndex] = string[i];
+
+			Permutate(string, isVisited, n, r - 1, result, resultIndex + 1);
+
+			isVisited[i] = false;
 		}
 	}
 
@@ -101,65 +37,56 @@ Exit:
 	return;
 }
 
-
-
-int
-main()
+void Combination(char *string, int startIndex, int n, int r, char *result, int resultIndex)
 {
-	char string = "ABCD";
+	int i;
 
-	char **result = NULL;
-	
-	unsigned long len, i, j numPermuatations;
-	
-	len = strlen(string);
+	if (r == 0)
+	{
+		for (i = 0; i < resultIndex; i++)
+		{
+			cout << result[i];
+		}
+
+		cout << endl;
+
+		goto Exit;
+	}
+
+	for (i = startIndex; i < n; i++)
+	{
+
+		result[resultIndex] = string[i];
+
+		Combination(string, i + 1, n, r - 1, result, resultIndex + 1);
+	}
+
+Exit:
+
+	return;
+}
+
+int main()
+{
+	char key;
+
+	char result[3];
+
+	char string[] = "ABCD";
+
+	bool isVisited[] = { false, false, false, false };
 
 	printf("Permutation\n");
-	
-	for (i = 1; i < len; i++)
-	{
-		numPermutations = Factorial(len) / Factorial(len - index);
-		
-		result = new char*[numPermutations];
-		
-		if (result == NULL)
-		{
-			goto Exit;
-		}
-		
-		for (j = 0; j < numPermutations; j++)
-		{
-			result[j] = new char*[len + 1];
-			
-			if (result[j] == NULL)
-			{
-				goto Exit;
-			}
-		}
-		
-		Permutate(string, isVisited, len, index, &result[0][0], 0);
-		
-		for (j = 0; j < numPermutations; j++)
-		{
-			delete[] result[j];
-		}
-			
-		delete[] result;
-	}
-	
-Exit:
-	if (result != NULL)
-	{
-		for (j = 0; j < numPermutations; j++)
-		{
-			if (result[j] != NULL)
-			{
-				delete[] result[j];
-			}
-		}
-		
-		delete[] result;
-	}
-	
+
+	Permutate(&string[0], &isVisited[0], 4, 3, &result[0], 0);
+
+	printf("Combination\n");
+
+	Combination(&string[0], 0, 4, 3, &result[0], 0);
+
+	cout << "Press Any Key ";
+
+	cin >> key;
+
 	return 0;
 }
